@@ -1,3 +1,8 @@
+.vs
+
+/KanbanBoardAPI/KanbanBoardAPI/obj/
+/KanbanBoardAPI/KanbanBoardAPI/bin/
+
 # Logs
 logs
 *.log
