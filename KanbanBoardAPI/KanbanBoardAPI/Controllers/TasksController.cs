@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KanbanBoard.WebAPI.Database;
+using KanbanBoard.WebAPI.DTOs;
+using KanbanBoard.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KanbanBoard.WebAPI.Database;
-using KanbanBoard.WebAPI.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KanbanBoard.WebAPI.Controllers
 {
@@ -25,7 +26,9 @@ namespace KanbanBoard.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
         {
-            return await _context.Tasks.ToListAsync();
+            return await _context.Tasks
+                .OrderByDescending(t => t.UpdatedAt)
+                .ToListAsync();
         }
 
         // GET: api/Tasks/5
@@ -45,14 +48,16 @@ namespace KanbanBoard.WebAPI.Controllers
         // PUT: api/Tasks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTaskItem(Guid id, TaskItem taskItem)
+        public async Task<IActionResult> PutTaskItem(Guid id, TaskItemDto taskItemDto)
         {
-            if (id != taskItem.Id)
-            {
-                return BadRequest();
-            }
+            var entity = await _context.Tasks.FindAsync(id);
+            if (entity is null) return NotFound();
 
-            _context.Entry(taskItem).State = EntityState.Modified;
+            entity.Title = taskItemDto.Title;
+            entity.Description = taskItemDto.Description;
+            entity.Status = taskItemDto.Status;
+           
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -76,12 +81,18 @@ namespace KanbanBoard.WebAPI.Controllers
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TaskItem>> PostTaskItem(TaskItem taskItem)
+        public async Task<ActionResult<TaskItem>> PostTaskItem(TaskItemDto taskItemDto)
         {
-            _context.Tasks.Add(taskItem);
+            var entity = new TaskItem
+            {
+                Title = taskItemDto.Title,
+                Description = taskItemDto.Description,
+                Status = taskItemDto.Status
+            };
+            _context.Tasks.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTaskItem", new { id = taskItem.Id }, taskItem);
+            return CreatedAtAction("GetTaskItem", new { id = entity.Id }, entity);
         }
 
         // DELETE: api/Tasks/5
