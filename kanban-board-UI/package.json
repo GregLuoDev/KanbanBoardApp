@@ -24,10 +24,13 @@
     "next-redux-wrapper": "^8.1.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-redux": "^9.2.0"
+    "react-hook-form": "^7.62.0",
+    "react-redux": "^9.2.0",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@hookform/resolvers": "^5.2.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -7,8 +7,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
-import { deleteTask } from "../lib/thunks/taskAsyncThunks";
-import { useAppDispatch } from "../lib/store";
+import { deleteTask } from "../../lib/thunks/taskAsyncThunks";
+import { useAppDispatch } from "../../lib/store";
 
 type Props = {
   open: boolean;

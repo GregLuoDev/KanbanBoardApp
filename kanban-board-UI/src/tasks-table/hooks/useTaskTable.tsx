@@ -3,7 +3,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import { Task } from "../lib/types";
 import { StatusCell } from "../components/StatusCell";
 
-export function useTaskTableWithCRUD() {
+export function useTaskTable() {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
@@ -13,23 +13,10 @@ export function useTaskTableWithCRUD() {
       {
         accessorKey: "title",
         header: "Title",
-        muiEditTextFieldProps: {
-          required: true,
-          error: !!validationErrors?.title,
-          helperText: validationErrors?.title,
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              title: undefined,
-            }),
-        },
       },
       {
         accessorKey: "description",
         header: "Description",
-        muiEditTextFieldProps: {
-          required: false,
-        },
       },
       {
         accessorKey: "status",

@@ -1,14 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
-import { MRT_EditActionButtons } from "material-react-table";
+import {
+  MRT_EditActionButtons,
+  MRT_Row,
+  MRT_TableInstance,
+} from "material-react-table";
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { TaskForm } from "./TaskForm";
+import { Task } from "../../lib/types";
 
-export function CreateTaskDialog({ table, row }: any) {
+type Props = {
+  row: MRT_Row<Task>;
+  table: MRT_TableInstance<Task>;
+};
+
+export function EditTaskDialog({ table, row }: Props) {
   return (
     <>
-      <DialogTitle variant="h4">Create New Task</DialogTitle>
+      <DialogTitle variant="h4">Edit Task</DialogTitle>
       <DialogContent>
         <TaskForm row={row} />
       </DialogContent>

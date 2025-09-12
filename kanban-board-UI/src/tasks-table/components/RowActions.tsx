@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -6,8 +5,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
+import { MRT_Row, MRT_TableInstance } from "material-react-table";
+import { Task } from "../../lib/types";
 
-export function RowActions({ row, table }: any) {
+type Props = {
+  row: MRT_Row<Task>;
+  table: MRT_TableInstance<Task>;
+};
+
+export function RowActions({ row, table }: Props) {
   const [open, setOpen] = useState(false);
 
   function openDeleteConfirmDialog() {

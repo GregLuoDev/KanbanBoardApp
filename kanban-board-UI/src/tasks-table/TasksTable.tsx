@@ -1,22 +1,20 @@
-"use client";
-
 import {
   MaterialReactTable,
   type MRT_TableOptions,
   useMaterialReactTable,
 } from "material-react-table";
-import { useTaskTableWithCRUD } from "./hooks/useTaskTableWithCRUD";
+import { useTaskTable } from "./hooks/useTaskTable";
 import { CreateTaskDialog } from "./components/CreateTaskDialog";
 import { EditTaskDialog } from "./components/EditTaskDialog";
 import { RowActions } from "./components/RowActions";
 import { TopToolbarCustomActions } from "./components/TopToolbarCustomActions";
-import { useAppDispatch, useAppSelector } from "./lib/store";
-import { Task } from "./lib/types";
-import { createTask, updateTask } from "./lib/thunks/taskAsyncThunks";
+import { useAppDispatch, useAppSelector } from "../lib/store";
+import { Task } from "../lib/types";
+import { createTask, updateTask } from "../lib/thunks/taskAsyncThunks";
 
-export function TasksTableWithCRUD() {
+export function TasksTable() {
   const dispatch = useAppDispatch();
-  const { columns, validateTask, setValidationErrors } = useTaskTableWithCRUD();
+  const { columns, validateTask, setValidationErrors } = useTaskTable();
 
   const {
     tasks,
@@ -86,7 +84,7 @@ export function TasksTableWithCRUD() {
     renderCreateRowDialogContent: CreateTaskDialog,
     renderEditRowDialogContent: EditTaskDialog,
     renderRowActions: ({ row, table }) => (
-      <RowActions row={row} table={table}  />
+      <RowActions row={row} table={table} />
     ),
     renderTopToolbarCustomActions: TopToolbarCustomActions,
     state: {

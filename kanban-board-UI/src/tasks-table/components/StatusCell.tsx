@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import { MRT_Cell } from "material-react-table";
-import { Task } from "../lib/types";
+import { Task } from "../../lib/types";
 
 export function StatusCell({ cell }: { cell: MRT_Cell<Task, unknown> }) {
   const status = cell.getValue();
