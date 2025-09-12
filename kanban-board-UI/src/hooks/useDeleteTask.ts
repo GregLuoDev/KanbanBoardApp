@@ -2,8 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "../makeData";
 
-//DELETE hook (delete user in api)
-export function useDeleteUser() {
+export function useDeleteTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (userId: string) => {

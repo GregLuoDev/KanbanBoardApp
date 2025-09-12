@@ -9,7 +9,7 @@ import { type User } from "./makeData";
 import { useGetUsers } from "./hooks/useGetTasks";
 import { useCreateUser } from "./hooks/useCreateTask";
 import { useUpdateUser } from "./hooks/useUpdateTask";
-import { useDeleteUser } from "./hooks/useDeleteTask";
+import { useDeleteTask } from "./hooks/useDeleteTask";
 import { useTaskTableWithCRUD } from "./hooks/useTaskTableWithCRUD";
 import { CreateTaskDialog } from "./components/CreateTaskDialog";
 import { EditTaskDialog } from "./components/EditTaskDialog";
@@ -33,8 +33,8 @@ export function TasksTableWithCRUD() {
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
     useUpdateUser();
   //call DELETE hook
-  const { mutateAsync: deleteUser, isPending: isDeletingUser } =
-    useDeleteUser();
+  const { mutateAsync: deleteTask, isPending: isDeletingTask } =
+    useDeleteTask();
 
   //CREATE action
   const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({
@@ -92,12 +92,12 @@ export function TasksTableWithCRUD() {
     renderCreateRowDialogContent: CreateTaskDialog,
     renderEditRowDialogContent: EditTaskDialog,
     renderRowActions: ({ row, table }) => (
-      <RowActions row={row} table={table} deleteUser={deleteUser} />
+      <RowActions row={row} table={table} deleteTask={deleteTask} />
     ),
     renderTopToolbarCustomActions: TopToolbarCustomActions,
     state: {
       isLoading: isLoadingUsers,
-      isSaving: isCreatingUser || isUpdatingUser || isDeletingUser,
+      isSaving: isCreatingUser || isUpdatingUser || isDeletingTask,
       showAlertBanner: isLoadingUsersError,
       showProgressBars: isFetchingUsers,
     },
