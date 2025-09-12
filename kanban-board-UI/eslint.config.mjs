@@ -19,6 +19,14 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    plugins: [
+      '@atlaskit/design-system',
+    ],
+    extends: [
+      "next/core-web-vitals",
+      "next/typescript"
+      'plugin:@atlaskit/design-system/recommended',
+    ],
   },
 ];
 
