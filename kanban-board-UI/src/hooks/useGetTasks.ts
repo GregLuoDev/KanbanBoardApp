@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fakeData, User } from "../components/makeData";
+import { fakeData, User } from "../makeData";
 
 //READ hook (get users from api)
 export function useGetUsers() {

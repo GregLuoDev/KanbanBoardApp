@@ -1,15 +1,14 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import { TaskTableWithCRUD } from "./TaskTableWithCRUD";
+import { TasksTableWithCRUD } from "./TasksTableWithCRUD";
 
 const queryClient = new QueryClient();
 
-export function TaskTable() {
+export function TasksTable() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TaskTableWithCRUD />
+      <TasksTableWithCRUD />
     </QueryClientProvider>
   );
 }

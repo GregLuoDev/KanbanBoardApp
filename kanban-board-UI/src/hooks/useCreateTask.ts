@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User } from "../components/makeData";
+import { User } from "../makeData";
 
 //CREATE hook (post new user to api)
 export function useCreateUser() {

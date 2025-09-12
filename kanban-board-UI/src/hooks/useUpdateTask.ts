@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User } from "../components/makeData";
+import { User } from "../makeData";
 
 //UPDATE hook (put user in api)
 export function useUpdateUser() {

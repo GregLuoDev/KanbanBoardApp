@@ -1,5 +1,5 @@
-import { TaskTable } from "@/src/components/TaskTable";
+import { TasksTable } from "@/src/TasksTable";
 
 export default function Home() {
-  return <TaskTable></TaskTable>;
+  return <TasksTable />;
 }
