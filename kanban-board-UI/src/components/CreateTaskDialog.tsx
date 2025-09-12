@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import {
   MRT_EditActionButtons,
-  MaterialReactTable,
-  // createRow,
-  type MRT_ColumnDef,
-  type MRT_Row,
-  type MRT_TableOptions,
-  useMaterialReactTable,
+
 } from "material-react-table";
 import {
   Box,

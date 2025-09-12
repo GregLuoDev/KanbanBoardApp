@@ -1,4 +1,5 @@
-﻿using KanbanBoard.WebAPI.Database;
+﻿using Humanizer;
+using KanbanBoard.WebAPI.Database;
 using KanbanBoard.WebAPI.DTOs;
 using KanbanBoard.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,6 @@ namespace KanbanBoard.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
         {
             return await _context.Tasks
-                .OrderByDescending(t => t.UpdatedAt)
                 .ToListAsync();
         }
 

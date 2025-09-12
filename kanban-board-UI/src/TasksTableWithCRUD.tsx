@@ -6,7 +6,6 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { type User } from "./makeData";
-import { useGetUsers } from "./hooks/useGetTasks";
 import { useCreateUser } from "./hooks/useCreateTask";
 import { useUpdateUser } from "./hooks/useUpdateTask";
 import { useDeleteTask } from "./hooks/useDeleteTask";
@@ -15,6 +14,7 @@ import { CreateTaskDialog } from "./components/CreateTaskDialog";
 import { EditTaskDialog } from "./components/EditTaskDialog";
 import { RowActions } from "./components/RowActions";
 import { TopToolbarCustomActions } from "./components/TopToolbarCustomActions";
+import { useAppSelector } from "./lib/store";
 
 export function TasksTableWithCRUD() {
   const { columns, validateUser, setValidationErrors } = useTaskTableWithCRUD();
@@ -22,13 +22,11 @@ export function TasksTableWithCRUD() {
   //call CREATE hook
   const { mutateAsync: createUser, isPending: isCreatingUser } =
     useCreateUser();
-  //call READ hook
-  const {
-    data: fetchedUsers = [],
-    isError: isLoadingUsersError,
-    isFetching: isFetchingUsers,
-    isLoading: isLoadingUsers,
-  } = useGetUsers();
+
+  const { tasks, isLoadingTasks, fetchingTasksError } = useAppSelector(
+    (state) => state.task
+  );
+
   //call UPDATE hook
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
     useUpdateUser();
@@ -68,16 +66,16 @@ export function TasksTableWithCRUD() {
 
   const table = useMaterialReactTable({
     columns,
-    data: fetchedUsers,
+    data: tasks,
     enableColumnOrdering: true,
     createDisplayMode: "modal", //default ('row', and 'custom' are also available)
     editDisplayMode: "modal", //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
     getRowId: (row) => row.id,
-    muiToolbarAlertBannerProps: isLoadingUsersError
+    muiToolbarAlertBannerProps: fetchingTasksError
       ? {
           color: "error",
-          children: "Error loading data",
+          children: "Error loading tasks",
         }
       : undefined,
     muiTableContainerProps: {
@@ -96,10 +94,10 @@ export function TasksTableWithCRUD() {
     ),
     renderTopToolbarCustomActions: TopToolbarCustomActions,
     state: {
-      isLoading: isLoadingUsers,
+      isLoading: isLoadingTasks,
       isSaving: isCreatingUser || isUpdatingUser || isDeletingTask,
-      showAlertBanner: isLoadingUsersError,
-      showProgressBars: isFetchingUsers,
+      showAlertBanner: !!fetchingTasksError,
+      showProgressBars: isLoadingTasks,
     },
   });
 
