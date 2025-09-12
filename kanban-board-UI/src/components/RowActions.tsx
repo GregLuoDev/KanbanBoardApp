@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { type MRT_Row } from "material-react-table";
+
 import { Box, IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { User } from "../makeData";
+import { useState } from "react";
+import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
-export function RowActions({ row, table, deleteTask }: any) {
-  const openDeleteConfirmModal = (row: MRT_Row<User>) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      deleteTask(row.original.id);
-    }
-  };
+export function RowActions({ row, table }: any) {
+  const [open, setOpen] = useState(false);
+
+  function openDeleteConfirmDialog() {
+    setOpen(true);
+  }
 
   return (
     <Box sx={{ display: "flex", gap: "1rem" }}>
@@ -21,10 +22,16 @@ export function RowActions({ row, table, deleteTask }: any) {
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete">
-        <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+        <IconButton color="error" onClick={openDeleteConfirmDialog}>
           <DeleteIcon />
         </IconButton>
       </Tooltip>
+
+      <DeleteConfirmDialog
+        open={open}
+        setOpen={setOpen}
+        taskId={row.original.id}
+      />
     </Box>
   );
 }

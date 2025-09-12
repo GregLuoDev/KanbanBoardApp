@@ -5,62 +5,58 @@ import {
   type MRT_TableOptions,
   useMaterialReactTable,
 } from "material-react-table";
-import { type User } from "./makeData";
-import { useCreateUser } from "./hooks/useCreateTask";
-import { useUpdateUser } from "./hooks/useUpdateTask";
-import { useDeleteTask } from "./hooks/useDeleteTask";
 import { useTaskTableWithCRUD } from "./hooks/useTaskTableWithCRUD";
 import { CreateTaskDialog } from "./components/CreateTaskDialog";
 import { EditTaskDialog } from "./components/EditTaskDialog";
 import { RowActions } from "./components/RowActions";
 import { TopToolbarCustomActions } from "./components/TopToolbarCustomActions";
-import { useAppSelector } from "./lib/store";
+import { useAppDispatch, useAppSelector } from "./lib/store";
+import { Task } from "./lib/types";
+import { createTask, updateTask } from "./lib/thunks/taskAsyncThunks";
 
 export function TasksTableWithCRUD() {
-  const { columns, validateUser, setValidationErrors } = useTaskTableWithCRUD();
+  const dispatch = useAppDispatch();
+  const { columns, validateTask, setValidationErrors } = useTaskTableWithCRUD();
 
-  //call CREATE hook
-  const { mutateAsync: createUser, isPending: isCreatingUser } =
-    useCreateUser();
+  const {
+    tasks,
+    isLoadingTasks,
+    fetchingTasksError,
+    isLoadingTask,
+    isCreatingTask,
+    isDeletingTask,
+    error,
+    isUpdatingTask,
+  } = useAppSelector((state) => state.task);
 
-  const { tasks, isLoadingTasks, fetchingTasksError } = useAppSelector(
-    (state) => state.task
-  );
-
-  //call UPDATE hook
-  const { mutateAsync: updateUser, isPending: isUpdatingUser } =
-    useUpdateUser();
-  //call DELETE hook
-  const { mutateAsync: deleteTask, isPending: isDeletingTask } =
-    useDeleteTask();
-
-  //CREATE action
-  const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({
+  const handleCreateTask: MRT_TableOptions<Task>["onCreatingRowSave"] = async ({
     values,
     table,
   }) => {
-    const newValidationErrors = validateUser(values);
+    const newValidationErrors = validateTask(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await createUser(values);
+    dispatch(createTask(values));
     table.setCreatingRow(null); //exit creating mode
   };
 
-  //UPDATE action
-  const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = async ({
+  const handleUpdateTask: MRT_TableOptions<Task>["onEditingRowSave"] = async ({
     values,
     table,
+    row,
   }) => {
-    const newValidationErrors = validateUser(values);
+    const originalData = row.original;
+
+    const newValidationErrors = validateTask(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await updateUser(values);
+    dispatch(updateTask({ ...values, id: originalData.id }));
     table.setEditingRow(null); //exit editing mode
   };
 
@@ -84,19 +80,19 @@ export function TasksTableWithCRUD() {
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateUser,
+    onCreatingRowSave: handleCreateTask,
     onEditingRowCancel: () => setValidationErrors({}),
-    onEditingRowSave: handleSaveUser,
+    onEditingRowSave: handleUpdateTask,
     renderCreateRowDialogContent: CreateTaskDialog,
     renderEditRowDialogContent: EditTaskDialog,
     renderRowActions: ({ row, table }) => (
-      <RowActions row={row} table={table} deleteTask={deleteTask} />
+      <RowActions row={row} table={table}  />
     ),
     renderTopToolbarCustomActions: TopToolbarCustomActions,
     state: {
-      isLoading: isLoadingTasks,
-      isSaving: isCreatingUser || isUpdatingUser || isDeletingTask,
-      showAlertBanner: !!fetchingTasksError,
+      isLoading: isLoadingTasks || isLoadingTask,
+      isSaving: isCreatingTask || isUpdatingTask || isDeletingTask,
+      showAlertBanner: !!fetchingTasksError || !!error,
       showProgressBars: isLoadingTasks,
     },
   });
