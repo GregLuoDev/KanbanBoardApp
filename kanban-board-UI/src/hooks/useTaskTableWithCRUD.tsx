@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { MRT_ColumnDef } from "material-react-table";
 import { Task } from "../lib/types";
+import { StatusCell } from "../components/StatusCell";
 
 export function useTaskTableWithCRUD() {
   const [validationErrors, setValidationErrors] = useState<
@@ -16,13 +17,11 @@ export function useTaskTableWithCRUD() {
           required: true,
           error: !!validationErrors?.title,
           helperText: validationErrors?.title,
-          //remove any previous validation errors when task focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
               title: undefined,
             }),
-          //optionally add validation checking for onBlur or onChange
         },
       },
       {
@@ -35,17 +34,7 @@ export function useTaskTableWithCRUD() {
       {
         accessorKey: "status",
         header: "Status",
-        muiEditTextFieldProps: {
-          type: "status",
-          required: true,
-          error: !!validationErrors?.status,
-          helperText: validationErrors?.status,
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              status: undefined,
-            }),
-        },
+        Cell: ({ cell }) => <StatusCell cell={cell}></StatusCell>,
       },
     ],
     [validationErrors]

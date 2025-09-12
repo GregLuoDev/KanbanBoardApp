@@ -35,7 +35,7 @@ export default function DeleteConfirmDialog({ open, setOpen, taskId }: Props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Please confirm.</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Please confirm</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to delete this task?
