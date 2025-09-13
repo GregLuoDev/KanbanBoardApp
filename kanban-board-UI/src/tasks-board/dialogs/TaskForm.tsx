@@ -8,9 +8,7 @@ import { RHFSelect } from '@/src/react-hook-form/RHFSelect';
 import { RHFTextField } from '@/src/react-hook-form/RHFTextField';
 import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
 
-type Props = { methods: UseFormReturn<TaskDto, any, TaskDto> };
-
-export function TaskForm({ methods }: Props) {
+export function TaskForm() {
   return (
     <div className="mt-2">
       <RHFTextField name="title" label="Title" />

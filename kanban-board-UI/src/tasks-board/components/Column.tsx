@@ -7,14 +7,14 @@ import {
 import { Copy, Ellipsis, Plus } from 'lucide-react';
 import { memo, useContext, useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
-
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element';
 import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/unsafe-overflow/element';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { DragLocationHistory } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import { Card, CardShadow } from './Card';
+import { Card } from './Card';
+import { CardShadow } from './CardDisplay';
 import {
   getColumnData,
   isCardData,

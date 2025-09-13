@@ -8,6 +8,7 @@ import { Alert, CircularProgress, Typography } from '@mui/material';
 import { TBoard, TCard, TColumn } from '@/src/tasks-board/shared/data';
 import { TasksBoard } from '@/src/tasks-board/TasksBoard';
 import { CreateTaskDialog } from '@/src/tasks-board/dialogs/CreateTaskDialog';
+import { CreateTaskButton } from '@/src/tasks-board/buttons/CreateTaskButton';
 
 function getInitialData(): TBoard {
   // Doing this so we get consistent ids on server and client
@@ -65,7 +66,7 @@ export default function Home() {
         Kanban Task Board
       </Typography>
 
-      <CreateTaskDialog />
+      <CreateTaskButton />
 
       <div>
         {isLoadingTasks && !fetchingTasksError ? (

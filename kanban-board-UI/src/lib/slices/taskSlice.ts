@@ -38,7 +38,11 @@ const initialState: TaskState = {
 const taskSlice = createSlice({
   name: 'task',
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = '';
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
@@ -123,4 +127,5 @@ const taskSlice = createSlice({
   },
 });
 
+export const { clearError } = taskSlice.actions;
 export default taskSlice.reducer;
