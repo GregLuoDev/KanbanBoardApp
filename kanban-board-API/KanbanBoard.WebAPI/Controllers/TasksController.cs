@@ -1,14 +1,8 @@
-﻿using Humanizer;
-using KanbanBoard.WebAPI.Database;
+﻿using KanbanBoard.WebAPI.Database;
 using KanbanBoard.WebAPI.DTOs;
 using KanbanBoard.WebAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace KanbanBoard.WebAPI.Controllers
 {
@@ -27,88 +21,128 @@ namespace KanbanBoard.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
         {
-            return await _context.Tasks
-                .ToListAsync();
+            try
+            {
+                var tasks = await _context.Tasks.ToListAsync();
+                return Ok(tasks);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error happens when retrieving tasks: {ex.Message}");
+            }
         }
 
-        // GET: api/Tasks/5
+        // GET: api/Tasks/3846bd70-a0c3-4079-879d-eea95554834c
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskItem>> GetTaskItem(Guid id)
         {
-            var taskItem = await _context.Tasks.FindAsync(id);
-
-            if (taskItem == null)
+            try
             {
-                return NotFound();
-            }
+                var taskItem = await _context.Tasks.FindAsync(id);
 
-            return taskItem;
+                if (taskItem == null)
+                {
+                    return NotFound($"Task with ID {id} not found.");
+                }
+
+                return Ok(taskItem);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error happens when retrieving task: {ex.Message}");
+            }
         }
 
-        // PUT: api/Tasks/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Tasks/3846bd70-a0c3-4079-879d-eea95554834c
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTaskItem(Guid id, TaskItemDto taskItemDto)
         {
-            var entity = await _context.Tasks.FindAsync(id);
-            if (entity is null) return NotFound();
-
-            entity.Title = taskItemDto.Title;
-            entity.Description = taskItemDto.Description;
-            entity.Status = taskItemDto.Status;
-           
-            _context.Entry(entity).State = EntityState.Modified;
+            if (taskItemDto is null)
+            {
+                return BadRequest("Task cannot be null.");
+            }
 
             try
             {
+                var entity = await _context.Tasks.FindAsync(id);
+                if (entity is null)
+                { 
+                    return NotFound($"Task with ID {id} not found."); 
+                }
+
+                entity.Title = taskItemDto.Title;
+                entity.Description = taskItemDto.Description;
+                entity.Status = taskItemDto.Status;
+
+                _context.Entry(entity).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
+
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!TaskItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                    return NotFound($"Task with ID {id} no longer exists.");
 
-            return NoContent();
+                throw;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error happens when updating task: {ex.Message}");
+            }
         }
 
         // POST: api/Tasks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TaskItem>> PostTaskItem(TaskItemDto taskItemDto)
         {
-            var entity = new TaskItem
+            if (taskItemDto is null)
             {
-                Title = taskItemDto.Title,
-                Description = taskItemDto.Description,
-                Status = taskItemDto.Status
-            };
-            _context.Tasks.Add(entity);
-            await _context.SaveChangesAsync();
+                return BadRequest("Task data cannot be null.");
+            }
 
-            return CreatedAtAction("GetTaskItem", new { id = entity.Id }, entity);
+            try
+            {
+                var entity = new TaskItem
+                {
+                    Title = taskItemDto.Title,
+                    Description = taskItemDto.Description,
+                    Status = taskItemDto.Status
+                };
+
+                _context.Tasks.Add(entity);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetTaskItem), new { id = entity.Id }, entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error happens when creating task: {ex.Message}");
+            }
         }
 
-        // DELETE: api/Tasks/5
+        // DELETE: api/Tasks/3846bd70-a0c3-4079-879d-eea95554834c
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskItem(Guid id)
         {
-            var taskItem = await _context.Tasks.FindAsync(id);
-            if (taskItem == null)
+            try
             {
-                return NotFound();
+                var taskItem = await _context.Tasks.FindAsync(id);
+                if (taskItem == null)
+                {
+                    return NotFound($"Task with ID {id} not found.");
+                }
+
+                _context.Tasks.Remove(taskItem);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            _context.Tasks.Remove(taskItem);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error happens when deleting task: {ex.Message}");
+            }
         }
 
         private bool TaskItemExists(Guid id)
