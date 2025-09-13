@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
 
+import { useAppDispatch } from '@/src/lib/store';
+import { updateTask } from '@/src/lib/thunks/taskAsyncThunks';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -23,13 +25,11 @@ import {
   isDraggingACard,
   TCard,
 } from '../shared/utils';
-import { CardDisplay, TCardState } from './CardDisplay';
-import { updateTask } from '@/src/lib/thunks/taskAsyncThunks';
-import { useAppDispatch, useAppSelector } from '@/src/lib/store';
+import { CardDisplay, TCardState } from './components/CardDisplay';
 
 const idle: TCardState = { type: 'idle' };
 
-export function TaskCard({ card, columnId }: { card: TCard; columnId: ColumnType }) {
+export function TaskCardContainer({ card, columnId }: { card: TCard; columnId: ColumnType }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TCardState>(idle);

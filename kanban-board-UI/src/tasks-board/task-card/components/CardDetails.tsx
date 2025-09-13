@@ -1,5 +1,5 @@
 import { CardContent, Typography } from '@mui/material';
-import { convertUTCToLocal, TCard } from '../shared/utils';
+import { convertUTCToLocal, TCard } from '../../shared/utils';
 
 export function CardDetails({ card }: { card: TCard }) {
   return (

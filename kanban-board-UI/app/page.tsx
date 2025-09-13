@@ -11,22 +11,11 @@ import { useEffect } from 'react';
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const {
-    tasks,
-    isLoadingTasks,
-    fetchingTasksError,
-    isLoadingTask,
-    isCreatingTask,
-    isDeletingTask,
-    error,
-    isUpdatingTask,
-  } = useAppSelector((state) => state.task);
+  const { tasks, isLoadingTasks, fetchingTasksError } = useAppSelector((state) => state.task);
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
-
-  console.log('-----------tasks', tasks);
 
   const columns: TColumn[] = [
     { id: ColumnType.toDo, title: 'To Do', cards: tasks.filter((t) => t.status === 0) },
@@ -42,7 +31,7 @@ export default function Home() {
 
       <CreateTaskButton />
 
-      <div>
+      <div className="mt-4">
         {isLoadingTasks && !fetchingTasksError ? (
           <CircularProgress />
         ) : (
@@ -55,7 +44,6 @@ export default function Home() {
           Cannot fetch tasks. Please try again.
         </Alert>
       )}
-      <TasksTable />
     </div>
   );
 }

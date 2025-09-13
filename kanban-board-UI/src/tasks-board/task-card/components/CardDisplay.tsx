@@ -3,9 +3,9 @@
 import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { Card, CardActionArea, CardActions } from '@mui/material';
 import { RefObject } from 'react';
-import { DeleteTaskButton } from '../buttons/DeleteTaskButton';
-import { EditTaskButton } from '../buttons/EditTaskButton';
-import { TCard } from '../shared/utils';
+import { DeleteTaskButton } from '../../buttons/DeleteTaskButton';
+import { EditTaskButton } from '../../buttons/EditTaskButton';
+import { TCard } from '../../shared/utils';
 import { CardDetails } from './CardDetails';
 export type TCardState =
   | {

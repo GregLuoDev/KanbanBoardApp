@@ -1,5 +1,3 @@
-'use client';
-
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element';
 import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/unsafe-overflow/element';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
@@ -26,8 +24,8 @@ import {
   TCardData,
   TColumn,
 } from '../shared/utils';
-import { TaskCard } from './TaskCard';
-import { CardShadow } from './CardDisplay';
+import { CardShadow } from '../task-card/components/CardDisplay';
+import { TaskCardContainer } from '../task-card/TaskCardContainer';
 
 type TColumnState =
   | {
@@ -60,13 +58,10 @@ const bgStyles: { [key in ColumnType]: string } = {
 
 const idle = { type: 'idle' } satisfies TColumnState;
 
-/**
- * A memoized component for rendering out the card.
- *
- * Created so that state changes to the column don't require all cards to be rendered
- */
 const CardList = memo(function CardList({ column }: { column: TColumn }) {
-  return column.cards.map((card) => <TaskCard key={card.id} card={card} columnId={column.id} />);
+  return column.cards.map((card) => (
+    <TaskCardContainer key={card.id} card={card} columnId={column.id} />
+  ));
 });
 
 export function Column({ column }: { column: TColumn }) {
