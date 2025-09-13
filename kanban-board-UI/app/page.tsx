@@ -5,7 +5,6 @@ import { fetchTasks } from '@/src/lib/thunks/taskAsyncThunks';
 import { CreateTaskButton } from '@/src/tasks-board/buttons/CreateTaskButton';
 import { ColumnType, TColumn } from '@/src/tasks-board/shared/utils';
 import { TasksBoard } from '@/src/tasks-board/TasksBoard';
-import { TasksTable } from '@/src/tasks-table/TasksTable';
 import { Alert, CircularProgress, Typography } from '@mui/material';
 import { useEffect } from 'react';
 

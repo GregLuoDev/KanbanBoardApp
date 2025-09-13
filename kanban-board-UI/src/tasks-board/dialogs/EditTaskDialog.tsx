@@ -23,6 +23,7 @@ type Props = {
   open: boolean;
   handleCloseDialog: () => void;
 };
+
 export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
   const dispatch = useAppDispatch();
   const { isUpdatingTask, error } = useAppSelector((state) => state.task);
@@ -75,59 +76,57 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
   }
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={(event, reason) => {
-          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-            return; // ignore auto-close
-          }
-          handleCloseDialog();
-        }}
-        aria-labelledby="create-new-task"
-        slotProps={{
-          paper: {
-            sx: {
-              width: '500px', // fixed width
-              maxWidth: 'none', // prevent shrinking
-            },
+    <Dialog
+      open={open}
+      onClose={(event, reason) => {
+        if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+          return; // ignore auto-close
+        }
+        handleCloseDialog();
+      }}
+      aria-labelledby="create-new-task"
+      slotProps={{
+        paper: {
+          sx: {
+            width: '500px', // fixed width
+            maxWidth: 'none', // prevent shrinking
           },
-        }}
-      >
-        <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleUpdateTask)}>
-          <DialogTitle variant="h4">Edit Task</DialogTitle>
-          <DialogContent>
-            <TaskForm />
-          </DialogContent>
-          <DialogActions className="m-4">
-            <Button onClick={handleCloseDialog} color="primary">
-              Cancel
-            </Button>
+        },
+      }}
+    >
+      <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleUpdateTask)}>
+        <DialogTitle variant="h4">Edit Task</DialogTitle>
+        <DialogContent>
+          <TaskForm />
+        </DialogContent>
+        <DialogActions className="m-4">
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
 
-            <div>
-              {isUpdatingTask && !error ? (
-                <CircularProgress />
-              ) : (
-                <Button
-                  type="submit"
-                  color="primary"
-                  autoFocus
-                  disabled={!formValues['title'] || !formValues['description'] || !isValid}
-                  variant="contained"
-                >
-                  Update
-                </Button>
-              )}
-            </div>
-          </DialogActions>
-        </RHFFormProvider>
+          <div>
+            {isUpdatingTask && !error ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                type="submit"
+                color="primary"
+                autoFocus
+                disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                variant="contained"
+              >
+                Update
+              </Button>
+            )}
+          </div>
+        </DialogActions>
+      </RHFFormProvider>
 
-        {shouldShowError && (
-          <Alert severity="error" className="m-6 mt-0">
-            Cannot update this task. Please try again.
-          </Alert>
-        )}
-      </Dialog>
-    </>
+      {shouldShowError && (
+        <Alert severity="error" className="m-6 mt-0">
+          Cannot update this task. Please try again.
+        </Alert>
+      )}
+    </Dialog>
   );
 }

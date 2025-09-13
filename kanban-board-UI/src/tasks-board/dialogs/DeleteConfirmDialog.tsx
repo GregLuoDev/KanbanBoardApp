@@ -1,3 +1,4 @@
+import { clearError } from '@/src/lib/slices/taskSlice';
 import {
   Alert,
   Button,
@@ -8,10 +9,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { Dispatch, SetStateAction, use, useEffect, useState } from 'react';
-import { deleteTask } from '../../lib/thunks/taskAsyncThunks';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../lib/store';
-import { clearError } from '@/src/lib/slices/taskSlice';
+import { deleteTask } from '../../lib/thunks/taskAsyncThunks';
 
 type Props = {
   open: boolean;
@@ -20,16 +20,7 @@ type Props = {
 };
 
 export default function DeleteConfirmDialog({ open, setOpen, taskId }: Props) {
-  const {
-    tasks,
-    isLoadingTasks,
-    fetchingTasksError,
-    isLoadingTask,
-    isCreatingTask,
-    isDeletingTask,
-    error,
-    isUpdatingTask,
-  } = useAppSelector((state) => state.task);
+  const { isDeletingTask, error } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const [deleted, setDeleted] = useState(false);
 
@@ -50,44 +41,42 @@ export default function DeleteConfirmDialog({ open, setOpen, taskId }: Props) {
   }
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={(event, reason) => {
-          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-            return; // ignore auto-close
-          }
-          handleClose();
-        }}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Please confirm</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this task?
-          </DialogContentText>
+    <Dialog
+      open={open}
+      onClose={(event, reason) => {
+        if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+          return; // ignore auto-close
+        }
+        handleClose();
+      }}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Please confirm</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Are you sure you want to delete this task?
+        </DialogContentText>
 
-          {!!error && (
-            <Alert severity="error" className="mt-4">
-              Cannot delete this task. Please try again.
-            </Alert>
+        {!!error && (
+          <Alert severity="error" className="mt-4">
+            Cannot delete this task. Please try again.
+          </Alert>
+        )}
+      </DialogContent>
+      <DialogActions className="mr-4 mb-4">
+        <Button onClick={handleClose}>No</Button>
+
+        <div>
+          {isDeletingTask && !error ? (
+            <CircularProgress />
+          ) : (
+            <Button onClick={handleDeleteTask} autoFocus variant="outlined" color="error">
+              Yes
+            </Button>
           )}
-        </DialogContent>
-        <DialogActions className="mr-4 mb-4">
-          <Button onClick={handleClose}>No</Button>
-
-          <div>
-            {isDeletingTask && !error ? (
-              <CircularProgress />
-            ) : (
-              <Button onClick={handleDeleteTask} autoFocus variant="outlined" color="error">
-                Yes
-              </Button>
-            )}
-          </div>
-        </DialogActions>
-      </Dialog>
-    </>
+        </div>
+      </DialogActions>
+    </Dialog>
   );
 }

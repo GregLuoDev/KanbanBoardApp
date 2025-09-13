@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/src/lib/store';
+import { createTask } from '@/src/lib/thunks/taskAsyncThunks';
+import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Alert,
   Button,
@@ -7,16 +11,11 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { TaskForm } from './TaskForm';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { TaskDto } from '../../lib/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch, useAppSelector } from '@/src/lib/store';
-import { createTask } from '@/src/lib/thunks/taskAsyncThunks';
-import { useDialog } from './useDialog';
-import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
+import { TaskForm } from './TaskForm';
 
 type Props = {
   open: boolean;
@@ -74,59 +73,57 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
   }
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={(event, reason) => {
-          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-            return; // ignore auto-close
-          }
-          handleCloseDialog();
-        }}
-        aria-labelledby="create-new-task"
-        slotProps={{
-          paper: {
-            sx: {
-              width: '500px', // fixed width
-              maxWidth: 'none', // prevent shrinking
-            },
+    <Dialog
+      open={open}
+      onClose={(event, reason) => {
+        if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+          return; // ignore auto-close
+        }
+        handleCloseDialog();
+      }}
+      aria-labelledby="create-new-task"
+      slotProps={{
+        paper: {
+          sx: {
+            width: '500px', // fixed width
+            maxWidth: 'none', // prevent shrinking
           },
-        }}
-      >
-        <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleCreateTask)}>
-          <DialogTitle variant="h4">Create New Task</DialogTitle>
-          <DialogContent>
-            <TaskForm />
-          </DialogContent>
-          <DialogActions className="m-4">
-            <Button onClick={handleCloseDialog} color="primary">
-              Cancel
-            </Button>
+        },
+      }}
+    >
+      <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleCreateTask)}>
+        <DialogTitle variant="h4">Create New Task</DialogTitle>
+        <DialogContent>
+          <TaskForm />
+        </DialogContent>
+        <DialogActions className="m-4">
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
 
-            <div>
-              {isCreatingTask && !error ? (
-                <CircularProgress />
-              ) : (
-                <Button
-                  type="submit"
-                  color="primary"
-                  autoFocus
-                  disabled={!formValues['title'] || !formValues['description'] || !isValid}
-                  variant="contained"
-                >
-                  Create
-                </Button>
-              )}
-            </div>
-          </DialogActions>
-        </RHFFormProvider>
+          <div>
+            {isCreatingTask && !error ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                type="submit"
+                color="primary"
+                autoFocus
+                disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                variant="contained"
+              >
+                Create
+              </Button>
+            )}
+          </div>
+        </DialogActions>
+      </RHFFormProvider>
 
-        {shouldShowError && (
-          <Alert severity="error" className="m-6 mt-0">
-            Cannot create this task. Please try again.
-          </Alert>
-        )}
-      </Dialog>
-    </>
+      {shouldShowError && (
+        <Alert severity="error" className="m-6 mt-0">
+          Cannot create this task. Please try again.
+        </Alert>
+      )}
+    </Dialog>
   );
 }
