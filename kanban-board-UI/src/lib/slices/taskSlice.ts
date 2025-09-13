@@ -101,7 +101,7 @@ const taskSlice = createSlice({
         state.tasks = state.tasks.map((t) => {
           const newTask = action.payload;
           if (t.id === newTask.id) {
-            return { ...t, ...newTask };
+            return { ...t, ...newTask, updatedAt: new Date().toISOString() };
           }
           return t;
         });

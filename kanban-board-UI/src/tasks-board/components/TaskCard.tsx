@@ -1,5 +1,3 @@
-'use client';
-
 import {
   draggable,
   dropTargetForElements,
@@ -17,6 +15,8 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { isShallowEqual } from '../shared/is-shallow-equal';
 import {
+  ColumnType,
+  convertColumnIdToNumber,
   getCardData,
   getCardDropTargetData,
   isCardData,
@@ -24,13 +24,16 @@ import {
   TCard,
 } from '../shared/utils';
 import { CardDisplay, TCardState } from './CardDisplay';
+import { updateTask } from '@/src/lib/thunks/taskAsyncThunks';
+import { useAppDispatch, useAppSelector } from '@/src/lib/store';
 
 const idle: TCardState = { type: 'idle' };
 
-export function TaskCard({ card, columnId }: { card: TCard; columnId: string }) {
+export function TaskCard({ card, columnId }: { card: TCard; columnId: ColumnType }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TCardState>(idle);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const outer = outerRef.current;
@@ -117,12 +120,22 @@ export function TaskCard({ card, columnId }: { card: TCard; columnId: string }) 
           }
           setState(idle);
         },
-        onDrop() {
+        onDrop({ source, self }) {
+          console.log('====source', source);
+          console.log('====self', self);
           setState(idle);
+
+          dispatch(
+            updateTask({
+              ...(source.data.card as TCard),
+              status: convertColumnIdToNumber(columnId),
+            }),
+          );
         },
       }),
     );
   }, [card, columnId]);
+
   return (
     <>
       <CardDisplay outerRef={outerRef} innerRef={innerRef} state={state} card={card} />

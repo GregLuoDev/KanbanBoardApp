@@ -113,3 +113,16 @@ export function convertUTCToLocal(utcString: string) {
     timeStyle: 'short',
   });
 }
+
+export function convertColumnIdToNumber(columnId: ColumnType) {
+  switch (columnId) {
+    case ColumnType.toDo:
+      return 0;
+    case ColumnType.inProgress:
+      return 1;
+    case ColumnType.done:
+      return 2;
+    default:
+      return -1;
+  }
+}
