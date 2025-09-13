@@ -1,41 +1,13 @@
 'use client';
 
-import { TasksTable } from '@/src/tasks-table/TasksTable';
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/src/lib/store';
 import { fetchTasks } from '@/src/lib/thunks/taskAsyncThunks';
-import { Alert, CircularProgress, Typography } from '@mui/material';
-import { TBoard, TCard, TColumn } from '@/src/tasks-board/shared/data';
-import { TasksBoard } from '@/src/tasks-board/TasksBoard';
-import { CreateTaskDialog } from '@/src/tasks-board/dialogs/CreateTaskDialog';
 import { CreateTaskButton } from '@/src/tasks-board/buttons/CreateTaskButton';
-
-function getInitialData(): TBoard {
-  // Doing this so we get consistent ids on server and client
-  const getCards = (() => {
-    let count: number = 0;
-
-    return function getCards({ amount }: { amount: number }): TCard[] {
-      return Array.from({ length: amount }, (): TCard => {
-        const id = count++;
-        return {
-          id: `card:${id}`,
-          description: `Card ${id}`,
-        };
-      });
-    };
-  })();
-
-  const columns: TColumn[] = [
-    { id: 'toDo', title: 'To Do', cards: getCards({ amount: 6 }) },
-    { id: 'inProgress', title: 'In Progress', cards: getCards({ amount: 4 }) },
-    { id: 'done', title: 'Done', cards: getCards({ amount: 3 }) },
-  ];
-
-  return {
-    columns,
-  };
-}
+import { TColumn } from '@/src/tasks-board/shared/data';
+import { TasksBoard } from '@/src/tasks-board/TasksBoard';
+import { TasksTable } from '@/src/tasks-table/TasksTable';
+import { Alert, CircularProgress, Typography } from '@mui/material';
+import { useEffect } from 'react';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -53,6 +25,8 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
+
+  console.log('-----------tasks', tasks);
 
   const columns: TColumn[] = [
     { id: 'toDo', title: 'To Do', cards: tasks.filter((t) => t.status === 0) },
@@ -72,7 +46,7 @@ export default function Home() {
         {isLoadingTasks && !fetchingTasksError ? (
           <CircularProgress />
         ) : (
-          <TasksBoard initial={{ columns }} />
+          <TasksBoard initial={{ columns }} key={JSON.stringify(tasks)} />
         )}
       </div>
 

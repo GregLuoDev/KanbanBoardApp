@@ -1,4 +1,12 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 import { TaskForm } from './TaskForm';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -46,9 +54,9 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
 
   const canCloseDialog = isSubmitted && !error && !isCreatingTask;
   const shouldShowError = isSubmitted && !isDirty && error && !isCreatingTask;
-  console.log('=====isSubmitted', isSubmitted);
-  console.log('=====error', error);
-  console.log('=====isCreatingTask', isCreatingTask);
+  // console.log('=====isSubmitted', isSubmitted);
+  // console.log('=====error', error);
+  // console.log('=====isCreatingTask', isCreatingTask);
 
   useEffect(() => {
     if (canCloseDialog) {
@@ -98,15 +106,21 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
               Cancel
             </Button>
 
-            <Button
-              type="submit"
-              color="primary"
-              autoFocus
-              disabled={!formValues['title'] || !formValues['description'] || !isValid}
-              variant="contained"
-            >
-              Create
-            </Button>
+            <div>
+              {isCreatingTask && !error ? (
+                <CircularProgress />
+              ) : (
+                <Button
+                  type="submit"
+                  color="primary"
+                  autoFocus
+                  disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                  variant="contained"
+                >
+                  Create
+                </Button>
+              )}
+            </div>
           </DialogActions>
         </RHFFormProvider>
 

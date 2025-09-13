@@ -1,20 +1,18 @@
 'use client';
 
-import {
-  draggable,
-  dropTargetForElements,
-} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { Copy, Ellipsis, Plus } from 'lucide-react';
-import { memo, useContext, useEffect, useRef, useState } from 'react';
-import invariant from 'tiny-invariant';
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element';
 import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/unsafe-overflow/element';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { DragLocationHistory } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
+import {
+  draggable,
+  dropTargetForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import { Card } from './Card';
-import { CardShadow } from './CardDisplay';
+import { Ellipsis } from 'lucide-react';
+import { memo, useContext, useEffect, useRef, useState } from 'react';
+import invariant from 'tiny-invariant';
 import {
   getColumnData,
   isCardData,
@@ -28,6 +26,8 @@ import {
 import { blockBoardPanningAttr } from '../shared/data-attributes';
 import { isShallowEqual } from '../shared/is-shallow-equal';
 import { SettingsContext } from '../shared/settings-context';
+import { Card } from './Card';
+import { CardShadow } from './CardDisplay';
 
 type TColumnState =
   | {
@@ -241,22 +241,6 @@ export function Column({ column }: { column: TColumn }) {
                 <CardShadow dragging={state.dragging} />
               </div>
             ) : null}
-          </div>
-          <div className="flex flex-row gap-2 p-3">
-            <button
-              type="button"
-              className="flex flex-grow flex-row gap-1 rounded p-2 hover:bg-slate-700 active:bg-slate-600"
-            >
-              <Plus size={16} />
-              <div className="leading-4">Add a card</div>
-            </button>
-            <button
-              type="button"
-              className="rounded p-2 hover:bg-slate-700 active:bg-slate-600"
-              aria-label="Create card from template"
-            >
-              <Copy size={16} />
-            </button>
           </div>
         </div>
       </div>

@@ -1,44 +1,12 @@
 'use client';
 
-import {
-  draggable,
-  dropTargetForElements,
-} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
-import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import { MutableRefObject, RefObject, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import invariant from 'tiny-invariant';
-
-import {
-  type Edge,
-  attachClosestEdge,
-  extractClosestEdge,
-} from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import {
-  getCardData,
-  getCardDropTargetData,
-  isCardData,
-  isDraggingACard,
-  TCard,
-} from '../shared/data';
-import { isShallowEqual } from '../shared/is-shallow-equal';
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import DeleteConfirmDialog from '../dialogs/DeleteConfirmDialog';
-import { useDialog } from '../dialogs/useDialog';
+import { RefObject } from 'react';
+import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+import { Card, CardActionArea, CardActions, CardContent, Typography } from '@mui/material';
 import { DeleteTaskButton } from '../buttons/DeleteTaskButton';
 import { EditTaskButton } from '../buttons/EditTaskButton';
+import { useDialog } from '../dialogs/useDialog';
+import { TCard } from '../shared/data';
 export type TCardState =
   | {
       type: 'idle';
@@ -94,7 +62,7 @@ export function CardDisplay({
   return (
     <div
       ref={outerRef}
-      className={`flex flex-shrink-0 flex-col gap-2 px-3 py-1 ${outerStyles[state.type]}`}
+      className={`flex flex-shrink-0 flex-col gap-2 px-3 pb-3 ${outerStyles[state.type]}`}
     >
       {/* Put a shadow before the item if closer to the top edge */}
       {state.type === 'is-over' && state.closestEdge === 'top' ? (

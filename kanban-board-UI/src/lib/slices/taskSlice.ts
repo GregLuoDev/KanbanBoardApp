@@ -81,6 +81,7 @@ const taskSlice = createSlice({
       .addCase(createTask.fulfilled, (state, action) => {
         state.isCreatingTask = false;
         state.error = '';
+        console.log('==========action.payload of createTask', action.payload);
         state.tasks.push(action.payload);
       })
       .addCase(createTask.rejected, (state, action) => {
@@ -95,6 +96,8 @@ const taskSlice = createSlice({
       .addCase(updateTask.fulfilled, (state, action) => {
         state.isUpdatingTask = false;
         state.error = '';
+        console.log('==========action.payload of updateTask', action.payload);
+
         state.tasks = state.tasks.map((t) => {
           const newTask = action.payload;
           if (t.id === newTask.id) {
@@ -115,6 +118,7 @@ const taskSlice = createSlice({
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.isDeletingTask = false;
         state.error = '';
+        console.log('==========action.payload of deleteTask', action.payload);
         state.tasks = state.tasks.filter((t) => {
           const id = action.payload;
           return t.id !== id;

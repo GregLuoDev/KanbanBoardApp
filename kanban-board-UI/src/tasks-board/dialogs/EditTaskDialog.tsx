@@ -1,4 +1,12 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 import { TaskForm } from './TaskForm';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,15 +22,9 @@ import { TCard } from '../shared/data';
 type Props = {
   card: TCard;
   open: boolean;
-
   handleCloseDialog: () => void;
 };
-export function EditTaskDialog({
-  card,
-  open,
-
-  handleCloseDialog,
-}: Props) {
+export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
   const dispatch = useAppDispatch();
   const { isUpdatingTask, error } = useAppSelector((state) => state.task);
   const Schema = Yup.object().shape({
@@ -54,9 +56,9 @@ export function EditTaskDialog({
 
   const canCloseDialog = isSubmitted && !error && !isUpdatingTask;
   const shouldShowError = isSubmitted && !isDirty && error && !isUpdatingTask;
-  console.log('=====isSubmitted', isSubmitted);
-  console.log('=====error', error);
-  console.log('=====isUpdatingTask', isUpdatingTask);
+  // console.log('=====isSubmitted', isSubmitted);
+  // console.log('=====error', error);
+  // console.log('=====formValues', formValues);
 
   useEffect(() => {
     if (canCloseDialog) {
@@ -65,7 +67,7 @@ export function EditTaskDialog({
   }, [canCloseDialog]);
 
   function handleUpdateTask() {
-    dispatch(updateTask(formValues));
+    dispatch(updateTask({ ...card, ...formValues }));
     reset(formValues, {
       keepValues: true, // keeps the current form values
       keepErrors: false, // clears errors
@@ -97,7 +99,7 @@ export function EditTaskDialog({
         }}
       >
         <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleUpdateTask)}>
-          <DialogTitle variant="h4">Create New Task</DialogTitle>
+          <DialogTitle variant="h4">Edit Task</DialogTitle>
           <DialogContent>
             <TaskForm />
           </DialogContent>
@@ -106,21 +108,27 @@ export function EditTaskDialog({
               Cancel
             </Button>
 
-            <Button
-              type="submit"
-              color="primary"
-              autoFocus
-              disabled={!formValues['title'] || !formValues['description'] || !isValid}
-              variant="contained"
-            >
-              Create
-            </Button>
+            <div>
+              {isUpdatingTask && !error ? (
+                <CircularProgress />
+              ) : (
+                <Button
+                  type="submit"
+                  color="primary"
+                  autoFocus
+                  disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                  variant="contained"
+                >
+                  Update
+                </Button>
+              )}
+            </div>
           </DialogActions>
         </RHFFormProvider>
 
         {shouldShowError && (
           <Alert severity="error" className="m-6 mt-0">
-            Cannot create this task. Please try again.
+            Cannot update this task. Please try again.
           </Alert>
         )}
       </Dialog>

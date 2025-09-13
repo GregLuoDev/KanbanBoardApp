@@ -17,7 +17,12 @@ export function EditTaskButton({ card }: { card: TCard }) {
         </IconButton>
       </Tooltip>
 
-      <EditTaskDialog open={open} card={card} handleCloseDialog={handleCloseDialog} />
+      <EditTaskDialog
+        open={open}
+        card={card}
+        handleCloseDialog={handleCloseDialog}
+        key={open.toString()}
+      />
     </>
   );
 }
