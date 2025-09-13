@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { TaskDto } from '../../lib/types';
 import { TaskForm } from './TaskForm';
+import { clearError } from '@/src/lib/slices/taskSlice';
 
 type Props = {
   open: boolean;
@@ -57,6 +58,7 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
   useEffect(() => {
     if (canCloseDialog) {
       handleCloseDialog();
+      dispatch(clearError());
     }
   }, [canCloseDialog]);
 
@@ -80,6 +82,7 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
           return; // ignore auto-close
         }
         handleCloseDialog();
+        dispatch(clearError());
       }}
       aria-labelledby="create-new-task"
       slotProps={{
@@ -109,7 +112,9 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
                 type="submit"
                 color="primary"
                 autoFocus
-                disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                disabled={
+                  !formValues['title'] || !formValues['description'] || !isValid || !isDirty
+                }
                 variant="contained"
               >
                 Create
@@ -120,7 +125,7 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
       </RHFFormProvider>
 
       {shouldShowError && (
-        <Alert severity="error" className="m-6 mt-0">
+        <Alert severity="error" className="m-6 mt-2">
           Cannot create this task. Please try again.
         </Alert>
       )}

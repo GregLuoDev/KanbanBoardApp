@@ -31,18 +31,16 @@ export default function Home() {
       <CreateTaskButton />
 
       <div className="my-4">
-        {isLoadingTasks && !fetchingTasksError ? (
-          <CircularProgress />
-        ) : (
+        {isLoadingTasks && !fetchingTasksError && <CircularProgress />}
+
+        {!isLoadingTasks && !!fetchingTasksError && (
+          <Alert severity="error">Cannot fetch tasks. Please try again.</Alert>
+        )}
+
+        {!isLoadingTasks && !fetchingTasksError && (
           <TasksBoard initial={{ columns }} key={JSON.stringify(tasks)} />
         )}
       </div>
-
-      {!!fetchingTasksError && (
-        <Alert severity="error" className="m-6 mt-0">
-          Cannot fetch tasks. Please try again.
-        </Alert>
-      )}
     </div>
   );
 }

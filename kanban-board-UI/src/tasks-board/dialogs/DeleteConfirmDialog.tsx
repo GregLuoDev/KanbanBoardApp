@@ -57,12 +57,6 @@ export default function DeleteConfirmDialog({ open, setOpen, taskId }: Props) {
         <DialogContentText id="alert-dialog-description">
           Are you sure you want to delete this task?
         </DialogContentText>
-
-        {!!error && (
-          <Alert severity="error" className="mt-4">
-            Cannot delete this task. Please try again.
-          </Alert>
-        )}
       </DialogContent>
       <DialogActions className="mr-4 mb-4">
         <Button onClick={handleClose}>No</Button>
@@ -77,6 +71,12 @@ export default function DeleteConfirmDialog({ open, setOpen, taskId }: Props) {
           )}
         </div>
       </DialogActions>
+
+      {!!error && (
+        <Alert severity="error" className="m-6 mt-2">
+          Cannot delete this task. Please try again.
+        </Alert>
+      )}
     </Dialog>
   );
 }

@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import { TaskDto } from '../../lib/types';
 import { TCard } from '../shared/types';
 import { TaskForm } from './TaskForm';
+import { clearError } from '@/src/lib/slices/taskSlice';
 
 type Props = {
   card: TCard;
@@ -60,6 +61,7 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
   useEffect(() => {
     if (canCloseDialog) {
       handleCloseDialog();
+      dispatch(clearError());
     }
   }, [canCloseDialog]);
 
@@ -83,6 +85,7 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
           return; // ignore auto-close
         }
         handleCloseDialog();
+        dispatch(clearError());
       }}
       aria-labelledby="create-new-task"
       slotProps={{
@@ -112,7 +115,9 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
                 type="submit"
                 color="primary"
                 autoFocus
-                disabled={!formValues['title'] || !formValues['description'] || !isValid}
+                disabled={
+                  !formValues['title'] || !formValues['description'] || !isValid || !isDirty
+                }
                 variant="contained"
               >
                 Update
@@ -123,7 +128,7 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
       </RHFFormProvider>
 
       {shouldShowError && (
-        <Alert severity="error" className="m-6 mt-0">
+        <Alert severity="error" className="m-6 mt-2">
           Cannot update this task. Please try again.
         </Alert>
       )}
