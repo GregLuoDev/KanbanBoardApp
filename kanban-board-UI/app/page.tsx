@@ -2,9 +2,9 @@
 
 import { TasksTable } from '@/src/tasks-table/TasksTable';
 import { useEffect } from 'react';
-import { useAppDispatch } from '@/src/lib/store';
+import { useAppDispatch, useAppSelector } from '@/src/lib/store';
 import { fetchTasks } from '@/src/lib/thunks/taskAsyncThunks';
-import { Typography } from '@mui/material';
+import { Alert, CircularProgress, Typography } from '@mui/material';
 import { TBoard, TCard, TColumn } from '@/src/tasks-board/shared/data';
 import { TasksBoard } from '@/src/tasks-board/TasksBoard';
 import { CreateTaskDialog } from '@/src/tasks-board/dialogs/CreateTaskDialog';
@@ -26,9 +26,9 @@ function getInitialData(): TBoard {
   })();
 
   const columns: TColumn[] = [
-    { id: 'column:a', title: 'Column A', cards: getCards({ amount: 6 }) },
-    { id: 'column:b', title: 'Column B', cards: getCards({ amount: 4 }) },
-    { id: 'column:c', title: 'Column C', cards: getCards({ amount: 3 }) },
+    { id: 'toDo', title: 'To Do', cards: getCards({ amount: 6 }) },
+    { id: 'inProgress', title: 'In Progress', cards: getCards({ amount: 4 }) },
+    { id: 'done', title: 'Done', cards: getCards({ amount: 3 }) },
   ];
 
   return {
@@ -38,18 +38,48 @@ function getInitialData(): TBoard {
 
 export default function Home() {
   const dispatch = useAppDispatch();
+  const {
+    tasks,
+    isLoadingTasks,
+    fetchingTasksError,
+    isLoadingTask,
+    isCreatingTask,
+    isDeletingTask,
+    error,
+    isUpdatingTask,
+  } = useAppSelector((state) => state.task);
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
+
+  const columns: TColumn[] = [
+    { id: 'toDo', title: 'To Do', cards: tasks.filter((t) => t.status === 0) },
+    { id: 'inProgress', title: 'In Progress', cards: tasks.filter((t) => t.status === 1) },
+    { id: 'done', title: 'Done', cards: tasks.filter((t) => t.status === 2) },
+  ];
 
   return (
     <div className="container mx-auto mt-4">
       <Typography variant="h3" gutterBottom>
         Kanban Task Board
       </Typography>
+
       <CreateTaskDialog />
-      <TasksBoard initial={getInitialData()} />;
+
+      <div>
+        {isLoadingTasks && !fetchingTasksError ? (
+          <CircularProgress />
+        ) : (
+          <TasksBoard initial={{ columns }} />
+        )}
+      </div>
+
+      {!!fetchingTasksError && (
+        <Alert severity="error" className="m-6 mt-0">
+          Cannot fetch tasks. Please try again.
+        </Alert>
+      )}
       <TasksTable />
     </div>
   );

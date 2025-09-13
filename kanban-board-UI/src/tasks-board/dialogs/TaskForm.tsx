@@ -13,19 +13,17 @@ type Props = { methods: UseFormReturn<TaskDto, any, TaskDto> };
 export function TaskForm({ methods }: Props) {
   return (
     <div className="mt-2">
-      <RHFFormProvider methods={methods}>
-        <RHFTextField name="title" label="Title" />
+      <RHFTextField name="title" label="Title" />
 
-        <div className="my-6">
-          <RHFTextField name="description" label="Description" multiline minRows={3} />
-        </div>
+      <div className="my-6">
+        <RHFTextField name="description" label="Description" multiline minRows={3} />
+      </div>
 
-        <RHFSelect name="status" label="Status">
-          <MenuItem value={0}>To Do</MenuItem>
-          <MenuItem value={1}>In Progress</MenuItem>
-          <MenuItem value={2}>Done</MenuItem>
-        </RHFSelect>
-      </RHFFormProvider>
+      <RHFSelect name="status" label="Status">
+        <MenuItem value={0}>To Do</MenuItem>
+        <MenuItem value={1}>In Progress</MenuItem>
+        <MenuItem value={2}>Done</MenuItem>
+      </RHFSelect>
     </div>
   );
 }

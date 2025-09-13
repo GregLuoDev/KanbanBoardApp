@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from "@reduxjs/toolkit";
-import { Task } from "../types";
+import { createSlice } from '@reduxjs/toolkit';
+import { Task } from '../types';
 import {
   createTask,
   deleteTask,
   fetchTaskById,
   fetchTasks,
   updateTask,
-} from "../thunks/taskAsyncThunks";
+} from '../thunks/taskAsyncThunks';
 
 type TaskState = {
   tasks: Task[];
@@ -24,32 +24,32 @@ type TaskState = {
 
 const initialState: TaskState = {
   tasks: [],
-  isLoadingTasks: false,
-  fetchingTasksError: "",
+  isLoadingTasks: true,
+  fetchingTasksError: '',
 
   currentTask: null,
   isLoadingTask: false,
   isCreatingTask: false,
   isUpdatingTask: false,
   isDeletingTask: false,
-  error: "",
+  error: '',
 };
 
 const taskSlice = createSlice({
-  name: "task",
+  name: 'task',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
         state.isLoadingTasks = true;
-        state.fetchingTasksError = "";
+        state.fetchingTasksError = '';
         state.tasks = [];
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.isLoadingTasks = false;
         state.tasks = action.payload;
-        state.fetchingTasksError = "";
+        state.fetchingTasksError = '';
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.isLoadingTasks = false;
@@ -59,7 +59,7 @@ const taskSlice = createSlice({
 
       .addCase(fetchTaskById.pending, (state) => {
         state.isLoadingTask = true;
-        state.error = "";
+        state.error = '';
       })
       .addCase(fetchTaskById.fulfilled, (state, action) => {
         state.isLoadingTask = false;
@@ -72,11 +72,11 @@ const taskSlice = createSlice({
 
       .addCase(createTask.pending, (state) => {
         state.isCreatingTask = true;
-        state.error = "";
+        state.error = '';
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.isCreatingTask = false;
-        state.error = "";
+        state.error = '';
         state.tasks.push(action.payload);
       })
       .addCase(createTask.rejected, (state, action) => {
@@ -86,11 +86,11 @@ const taskSlice = createSlice({
 
       .addCase(updateTask.pending, (state) => {
         state.isUpdatingTask = true;
-        state.error = "";
+        state.error = '';
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         state.isUpdatingTask = false;
-        state.error = "";
+        state.error = '';
         state.tasks = state.tasks.map((t) => {
           const newTask = action.payload;
           if (t.id === newTask.id) {
@@ -106,11 +106,11 @@ const taskSlice = createSlice({
 
       .addCase(deleteTask.pending, (state) => {
         state.isDeletingTask = true;
-        state.error = "";
+        state.error = '';
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.isDeletingTask = false;
-        state.error = "";
+        state.error = '';
         state.tasks = state.tasks.filter((t) => {
           const id = action.payload;
           return t.id !== id;

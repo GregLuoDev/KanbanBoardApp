@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '@/src/lib/store';
 import { createTask } from '@/src/lib/thunks/taskAsyncThunks';
 import { useDialog } from './useDialog';
+import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
 
 export function CreateTaskDialog() {
   const { open, setOpen, handleOpenDialog, handleCloseDialog } = useDialog();
@@ -34,13 +35,14 @@ export function CreateTaskDialog() {
   const {
     watch,
     reset,
-    formState: { isValid, isSubmitted },
+    handleSubmit,
+    formState: { isValid, isSubmitted, isDirty },
   } = methods;
 
   const formValues = watch();
 
   const canCloseDialog = isSubmitted && !error && !isCreatingTask;
-  const shouldShowError = isSubmitted && error && !isCreatingTask;
+  const shouldShowError = isSubmitted && !isDirty && error && !isCreatingTask;
   console.log('=====isSubmitted', isSubmitted);
   console.log('=====error', error);
   console.log('=====isCreatingTask', isCreatingTask);
@@ -58,8 +60,8 @@ export function CreateTaskDialog() {
       keepErrors: false, // clears errors
       keepDirty: false, // clears dirty state
       keepTouched: false, // clears touched state
-      keepIsSubmitted: false,
-      keepSubmitCount: false,
+      keepIsSubmitted: true,
+      keepSubmitCount: true,
     });
   }
 
@@ -71,7 +73,13 @@ export function CreateTaskDialog() {
 
       <Dialog
         open={open}
-        onClose={handleCloseDialog}
+        onClose={(event, reason) => {
+          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+            return; // ignore auto-close
+          }
+          handleCloseDialog();
+        }}
+        // onClose={handleCloseDialog}
         aria-labelledby="create-new-task"
         slotProps={{
           paper: {
@@ -82,28 +90,31 @@ export function CreateTaskDialog() {
           },
         }}
       >
-        <DialogTitle variant="h4">Create New Task</DialogTitle>
-        <DialogContent>
-          <TaskForm methods={methods} />
-        </DialogContent>
-        <DialogActions className="m-4">
-          <Button onClick={handleCloseDialog} color="primary">
-            Cancel
-          </Button>
+        <RHFFormProvider methods={methods} onSubmit={handleSubmit(handleCreateTask)}>
+          <DialogTitle variant="h4">Create New Task</DialogTitle>
+          <DialogContent>
+            <TaskForm methods={methods} />
+          </DialogContent>
+          <DialogActions className="m-4">
+            <Button onClick={handleCloseDialog} color="primary">
+              Cancel
+            </Button>
 
-          <Button
-            onClick={handleCreateTask}
-            color="primary"
-            autoFocus
-            disabled={!formValues['title'] || !formValues['description'] || !isValid}
-            variant="contained"
-          >
-            Create
-          </Button>
-        </DialogActions>
+            <Button
+              // onClick={handleCreateTask}
+              type="submit"
+              color="primary"
+              autoFocus
+              disabled={!formValues['title'] || !formValues['description'] || !isValid}
+              variant="contained"
+            >
+              Create
+            </Button>
+          </DialogActions>
+        </RHFFormProvider>
 
         {shouldShowError && (
-          <Alert severity="error" className="m-4 mt-0">
+          <Alert severity="error" className="m-6 mt-0">
             Cannot create this task. Please try again.
           </Alert>
         )}

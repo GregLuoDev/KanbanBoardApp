@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, RefObject, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
 
@@ -74,8 +74,8 @@ export function CardDisplay({
 }: {
   card: TCard;
   state: TCardState;
-  outerRef?: React.MutableRefObject<HTMLDivElement | null>;
-  innerRef?: MutableRefObject<HTMLDivElement | null>;
+  outerRef?: RefObject<HTMLDivElement | null>;
+  innerRef?: RefObject<HTMLDivElement | null>;
 }) {
   return (
     <div

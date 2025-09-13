@@ -23,6 +23,7 @@ import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-an
 import { bindAll } from 'bind-event-listener';
 import { blockBoardPanningAttr } from './shared/data-attributes';
 import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
+import { useAppSelector } from '../lib/store';
 
 export function TasksBoard({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
