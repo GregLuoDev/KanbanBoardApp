@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { TaskDto } from '../../lib/types';
-import { TCard } from '../shared/utils';
+import { TCard } from '../shared/types';
 import { TaskForm } from './TaskForm';
 
 type Props = {

@@ -1,34 +1,12 @@
-export type TCard = {
-  id: string;
-  title: string;
-  description: string;
-  status: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export enum ColumnType {
-  toDo = 'toDo',
-  inProgress = 'inProgress',
-  done = 'done',
-}
-export type TColumn = {
-  id: ColumnType;
-  title: string;
-  cards: TCard[];
-};
-
-export type TBoard = {
-  columns: TColumn[];
-};
-
-const cardKey = Symbol('card');
-export type TCardData = {
-  [cardKey]: true;
-  card: TCard;
-  columnId: string;
-  rect: DOMRect;
-};
+import {
+  cardKey,
+  TCardData,
+  TCardDropTargetData,
+  cardDropTargetKey,
+  TColumnData,
+  columnKey,
+  ColumnType,
+} from './types';
 
 export function getCardData({
   card,
@@ -55,13 +33,6 @@ export function isDraggingACard({
   return isCardData(source.data);
 }
 
-const cardDropTargetKey = Symbol('card-drop-target');
-export type TCardDropTargetData = {
-  [cardDropTargetKey]: true;
-  card: TCard;
-  columnId: string;
-};
-
 export function isCardDropTargetData(
   value: Record<string | symbol, unknown>,
 ): value is TCardDropTargetData {
@@ -80,12 +51,6 @@ export function getCardDropTargetData({
     columnId,
   };
 }
-
-const columnKey = Symbol('column');
-export type TColumnData = {
-  [columnKey]: true;
-  column: TColumn;
-};
 
 export function getColumnData({ column }: Omit<TColumnData, typeof columnKey>): TColumnData {
   return {

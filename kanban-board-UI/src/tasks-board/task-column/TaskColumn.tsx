@@ -13,16 +13,14 @@ import invariant from 'tiny-invariant';
 import { blockBoardPanningAttr } from '../shared/data-attributes';
 import { isShallowEqual } from '../shared/is-shallow-equal';
 import { SettingsContext } from '../shared/settings-context';
+import { ColumnType, TCardData, TColumn } from '../shared/types';
 import {
-  ColumnType,
   getColumnData,
   isCardData,
   isCardDropTargetData,
   isColumnData,
   isDraggingACard,
   isDraggingAColumn,
-  TCardData,
-  TColumn,
 } from '../shared/utils';
 import { CardShadow } from '../task-card/components/TaskCard';
 import { TaskCardContainer } from '../task-card/TaskCardContainer';

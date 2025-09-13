@@ -7,7 +7,6 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
-
 import { useAppDispatch } from '@/src/lib/store';
 import { updateTask } from '@/src/lib/thunks/taskAsyncThunks';
 import {
@@ -17,15 +16,14 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { isShallowEqual } from '../shared/is-shallow-equal';
 import {
-  ColumnType,
   convertColumnIdToNumber,
   getCardData,
   getCardDropTargetData,
   isCardData,
   isDraggingACard,
-  TCard,
 } from '../shared/utils';
-import { TaskCard, TCardState } from './components/TaskCard';
+import { ColumnType, TCard, TCardState } from '../shared/types';
+import { TaskCard } from './components/TaskCard';
 
 const idle: TCardState = { type: 'idle' };
 

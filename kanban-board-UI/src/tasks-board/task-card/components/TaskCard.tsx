@@ -1,32 +1,9 @@
-'use client';
-
-import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { Card, CardActionArea, CardActions } from '@mui/material';
 import { RefObject } from 'react';
 import { DeleteTaskButton } from '../../buttons/DeleteTaskButton';
 import { EditTaskButton } from '../../buttons/EditTaskButton';
-import { TCard } from '../../shared/utils';
+import { TCard, TCardState } from '../../shared/types';
 import { TaskCardDetails } from './TaskCardDetails';
-export type TCardState =
-  | {
-      type: 'idle';
-    }
-  | {
-      type: 'is-dragging';
-    }
-  | {
-      type: 'is-dragging-and-left-self';
-    }
-  | {
-      type: 'is-over';
-      dragging: DOMRect;
-      closestEdge: Edge;
-    }
-  | {
-      type: 'preview';
-      container: HTMLElement;
-      dragging: DOMRect;
-    };
 
 const innerStyles: { [Key in TCardState['type']]?: string } = {
   idle: 'hover:outline outline-2 outline-neutral-50 cursor-grab',
@@ -34,11 +11,6 @@ const innerStyles: { [Key in TCardState['type']]?: string } = {
 };
 
 const outerStyles: { [Key in TCardState['type']]?: string } = {
-  // We no longer render the draggable item after we have left it
-  // as it's space will be taken up by a shadow on adjacent items.
-  // Using `display:none` rather than returning `null` so we can always
-  // return refs from this component.
-  // Keeping the refs allows us to continue to receive events during the drag.
   'is-dragging-and-left-self': 'hidden',
 };
 

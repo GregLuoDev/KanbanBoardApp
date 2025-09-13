@@ -18,10 +18,8 @@ import {
   isColumnData,
   isDraggingACard,
   isDraggingAColumn,
-  TBoard,
-  TColumn,
 } from './shared/utils';
-
+import { TBoard, TColumn } from './shared/types';
 export function TasksBoard({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
