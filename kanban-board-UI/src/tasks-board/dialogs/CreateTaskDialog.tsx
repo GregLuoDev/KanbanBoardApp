@@ -54,9 +54,6 @@ export function CreateTaskDialog({ open, handleCloseDialog }: Props) {
 
   const canCloseDialog = isSubmitted && !error && !isCreatingTask;
   const shouldShowError = isSubmitted && !isDirty && error && !isCreatingTask;
-  // console.log('=====isSubmitted', isSubmitted);
-  // console.log('=====error', error);
-  // console.log('=====isCreatingTask', isCreatingTask);
 
   useEffect(() => {
     if (canCloseDialog) {

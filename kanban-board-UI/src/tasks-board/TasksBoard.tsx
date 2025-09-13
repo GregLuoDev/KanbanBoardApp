@@ -11,7 +11,7 @@ import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { bindAll } from 'bind-event-listener';
 import { useContext, useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
-import { Column } from './components/Column';
+import { TaskColumn } from './task-column/TaskColumn';
 import { blockBoardPanningAttr } from './shared/data-attributes';
 import { SettingsContext } from './shared/settings-context';
 import {
@@ -147,8 +147,6 @@ export function TasksBoard({ initial }: { initial: TBoard }) {
 
             // dropping on home
             if (home === destination) {
-              console.log('moving card to home column');
-
               // move to last position
               const reordered = reorder({
                 list: home.cards,
@@ -165,8 +163,6 @@ export function TasksBoard({ initial }: { initial: TBoard }) {
               setData({ ...data, columns });
               return;
             }
-
-            console.log('moving card to another column');
 
             // remove card from home list
 
@@ -347,7 +343,7 @@ export function TasksBoard({ initial }: { initial: TBoard }) {
         ref={scrollableRef}
       >
         {data.columns.map((column) => (
-          <Column key={column.id} column={column} />
+          <TaskColumn key={column.id} column={column} />
         ))}
       </div>
     </div>

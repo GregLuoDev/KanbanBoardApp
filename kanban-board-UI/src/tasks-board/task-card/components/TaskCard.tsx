@@ -6,7 +6,7 @@ import { RefObject } from 'react';
 import { DeleteTaskButton } from '../../buttons/DeleteTaskButton';
 import { EditTaskButton } from '../../buttons/EditTaskButton';
 import { TCard } from '../../shared/utils';
-import { CardDetails } from './CardDetails';
+import { TaskCardDetails } from './TaskCardDetails';
 export type TCardState =
   | {
       type: 'idle';
@@ -46,7 +46,7 @@ export function CardShadow({ dragging }: { dragging: DOMRect }) {
   return <div className="flex-shrink-0 rounded bg-slate-900" style={{ height: dragging.height }} />;
 }
 
-export function CardDisplay({
+export function TaskCard({
   card,
   state,
   outerRef,
@@ -81,7 +81,7 @@ export function CardDisplay({
       >
         <Card>
           <CardActionArea>
-            <CardDetails card={card} />
+            <TaskCardDetails card={card} />
           </CardActionArea>
           <CardActions className="flex justify-between">
             <EditTaskButton card={card} />

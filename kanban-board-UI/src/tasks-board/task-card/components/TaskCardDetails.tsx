@@ -1,11 +1,11 @@
 import { CardContent, Typography } from '@mui/material';
 import { convertUTCToLocal, TCard } from '../../shared/utils';
 
-export function CardDetails({ card }: { card: TCard }) {
+export function TaskCardDetails({ card }: { card: TCard }) {
   return (
-    <CardContent className="p-4 pb-0!">
+    <CardContent className="cursor-grab p-4 pb-0!">
       <Typography gutterBottom variant="h6" component="h5" className="bg-gray-100">
-        {card.title}
+        <div className="flex justify-center">{card.title}</div>
       </Typography>
 
       <Typography variant="body1" component="p">

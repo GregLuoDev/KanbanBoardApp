@@ -25,7 +25,7 @@ import {
   isDraggingACard,
   TCard,
 } from '../shared/utils';
-import { CardDisplay, TCardState } from './components/CardDisplay';
+import { TaskCard, TCardState } from './components/TaskCard';
 
 const idle: TCardState = { type: 'idle' };
 
@@ -121,8 +121,6 @@ export function TaskCardContainer({ card, columnId }: { card: TCard; columnId: C
           setState(idle);
         },
         onDrop({ source, self }) {
-          console.log('====source', source);
-          console.log('====self', self);
           setState(idle);
 
           dispatch(
@@ -138,9 +136,9 @@ export function TaskCardContainer({ card, columnId }: { card: TCard; columnId: C
 
   return (
     <>
-      <CardDisplay outerRef={outerRef} innerRef={innerRef} state={state} card={card} />
+      <TaskCard outerRef={outerRef} innerRef={innerRef} state={state} card={card} />
       {state.type === 'preview'
-        ? createPortal(<CardDisplay state={state} card={card} />, state.container)
+        ? createPortal(<TaskCard state={state} card={card} />, state.container)
         : null}
     </>
   );

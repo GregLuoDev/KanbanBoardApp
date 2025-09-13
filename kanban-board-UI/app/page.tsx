@@ -31,7 +31,7 @@ export default function Home() {
 
       <CreateTaskButton />
 
-      <div className="mt-4">
+      <div className="my-4">
         {isLoadingTasks && !fetchingTasksError ? (
           <CircularProgress />
         ) : (

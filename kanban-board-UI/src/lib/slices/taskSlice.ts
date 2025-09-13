@@ -1,13 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit';
 import { Task } from '../types';
-import {
-  createTask,
-  deleteTask,
-  fetchTaskById,
-  fetchTasks,
-  updateTask,
-} from '../thunks/taskAsyncThunks';
+import { createTask, deleteTask, fetchTasks, updateTask } from '../thunks/taskAsyncThunks';
 
 type TaskState = {
   tasks: Task[];
@@ -61,19 +54,6 @@ const taskSlice = createSlice({
         state.tasks = [];
       })
 
-      .addCase(fetchTaskById.pending, (state) => {
-        state.isLoadingTask = true;
-        state.error = '';
-      })
-      .addCase(fetchTaskById.fulfilled, (state, action) => {
-        state.isLoadingTask = false;
-        state.currentTask = action.payload;
-      })
-      .addCase(fetchTaskById.rejected, (state, action) => {
-        state.isLoadingTask = false;
-        state.error = action.payload as string;
-      })
-
       .addCase(createTask.pending, (state) => {
         state.isCreatingTask = true;
         state.error = '';
@@ -81,7 +61,6 @@ const taskSlice = createSlice({
       .addCase(createTask.fulfilled, (state, action) => {
         state.isCreatingTask = false;
         state.error = '';
-        console.log('==========action.payload of createTask', action.payload);
         state.tasks.push(action.payload);
       })
       .addCase(createTask.rejected, (state, action) => {
@@ -96,14 +75,12 @@ const taskSlice = createSlice({
       .addCase(updateTask.fulfilled, (state, action) => {
         state.isUpdatingTask = false;
         state.error = '';
-        console.log('==========action.payload of updateTask', action.payload);
-
-        state.tasks = state.tasks.map((t) => {
+        state.tasks = state.tasks.map((task) => {
           const newTask = action.payload;
-          if (t.id === newTask.id) {
-            return { ...t, ...newTask, updatedAt: new Date().toISOString() };
+          if (task.id === newTask.id) {
+            return { ...task, ...newTask, updatedAt: new Date().toISOString() };
           }
-          return t;
+          return task;
         });
       })
       .addCase(updateTask.rejected, (state, action) => {
@@ -118,7 +95,6 @@ const taskSlice = createSlice({
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.isDeletingTask = false;
         state.error = '';
-        console.log('==========action.payload of deleteTask', action.payload);
         state.tasks = state.tasks.filter((t) => {
           const id = action.payload;
           return t.id !== id;

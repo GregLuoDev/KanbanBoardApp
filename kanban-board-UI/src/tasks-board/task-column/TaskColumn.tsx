@@ -24,7 +24,7 @@ import {
   TCardData,
   TColumn,
 } from '../shared/utils';
-import { CardShadow } from '../task-card/components/CardDisplay';
+import { CardShadow } from '../task-card/components/TaskCard';
 import { TaskCardContainer } from '../task-card/TaskCardContainer';
 
 type TColumnState =
@@ -64,7 +64,7 @@ const CardList = memo(function CardList({ column }: { column: TColumn }) {
   ));
 });
 
-export function Column({ column }: { column: TColumn }) {
+export function TaskColumn({ column }: { column: TColumn }) {
   const scrollableRef = useRef<HTMLDivElement | null>(null);
   const outerFullHeightRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);

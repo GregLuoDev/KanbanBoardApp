@@ -55,9 +55,6 @@ export function EditTaskDialog({ card, open, handleCloseDialog }: Props) {
 
   const canCloseDialog = isSubmitted && !error && !isUpdatingTask;
   const shouldShowError = isSubmitted && !isDirty && error && !isUpdatingTask;
-  // console.log('=====isSubmitted', isSubmitted);
-  // console.log('=====error', error);
-  // console.log('=====formValues', formValues);
 
   useEffect(() => {
     if (canCloseDialog) {
