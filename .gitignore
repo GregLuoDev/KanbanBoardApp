@@ -1,7 +1,9 @@
 .vs
 
-/kanban-board-API/KanbanBoardAPI/obj/
-/kanban-board-API/KanbanBoardAPI/bin/
+/kanban-board-API/KanbanBoard.WebAPI/obj/
+/kanban-board-API/KanbanBoard.WebAPI/bin/
+/kanban-board-API/KanbanBoard.WebAPI.Tests/obj/
+/kanban-board-API/KanbanBoard.WebAPI.Tests/bin/
 
 # Logs
 logs
