@@ -25,7 +25,6 @@ public class KanbanDbContext:DbContext
 
     }
 
-
     public override int SaveChanges()
     {
         UpdateTimestamps();
@@ -40,7 +39,6 @@ public class KanbanDbContext:DbContext
 
     private void UpdateTimestamps()
     {
-        Console.WriteLine("============ChangeTracker.Entries()", ChangeTracker.Entries());
         var entries = ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
