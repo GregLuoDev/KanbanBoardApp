@@ -10,7 +10,6 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import { Ellipsis } from 'lucide-react';
 import { memo, useContext, useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
 import { blockBoardPanningAttr } from '../shared/data-attributes';
@@ -27,7 +26,7 @@ import {
   TCardData,
   TColumn,
 } from '../shared/utils';
-import { Card } from './Card';
+import { TaskCard } from './TaskCard';
 import { CardShadow } from './CardDisplay';
 
 type TColumnState =
@@ -67,7 +66,7 @@ const idle = { type: 'idle' } satisfies TColumnState;
  * Created so that state changes to the column don't require all cards to be rendered
  */
 const CardList = memo(function CardList({ column }: { column: TColumn }) {
-  return column.cards.map((card) => <Card key={card.id} card={card} columnId={column.id} />);
+  return column.cards.map((card) => <TaskCard key={card.id} card={card} columnId={column.id} />);
 });
 
 export function Column({ column }: { column: TColumn }) {
@@ -218,7 +217,7 @@ export function Column({ column }: { column: TColumn }) {
   }, [column, settings]);
 
   return (
-    <div className="flex w-72 flex-shrink-0 flex-col select-none" ref={outerFullHeightRef}>
+    <div className="flex flex-1 flex-shrink-0 flex-col select-none" ref={outerFullHeightRef}>
       <div
         className={`flex max-h-full flex-col rounded-lg ${bgStyles[column.id]} text-neutral-50 ${stateStyles[state.type]}`}
         ref={innerRef}

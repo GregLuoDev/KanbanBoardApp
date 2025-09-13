@@ -27,7 +27,7 @@ import { CardDisplay, TCardState } from './CardDisplay';
 
 const idle: TCardState = { type: 'idle' };
 
-export function Card({ card, columnId }: { card: TCard; columnId: string }) {
+export function TaskCard({ card, columnId }: { card: TCard; columnId: string }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TCardState>(idle);
