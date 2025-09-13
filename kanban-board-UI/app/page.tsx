@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/src/lib/store';
 import { fetchTasks } from '@/src/lib/thunks/taskAsyncThunks';
 import { CreateTaskButton } from '@/src/tasks-board/buttons/CreateTaskButton';
-import { TColumn } from '@/src/tasks-board/shared/data';
+import { ColumnType, TColumn } from '@/src/tasks-board/shared/utils';
 import { TasksBoard } from '@/src/tasks-board/TasksBoard';
 import { TasksTable } from '@/src/tasks-table/TasksTable';
 import { Alert, CircularProgress, Typography } from '@mui/material';
@@ -29,9 +29,9 @@ export default function Home() {
   console.log('-----------tasks', tasks);
 
   const columns: TColumn[] = [
-    { id: 'toDo', title: 'To Do', cards: tasks.filter((t) => t.status === 0) },
-    { id: 'inProgress', title: 'In Progress', cards: tasks.filter((t) => t.status === 1) },
-    { id: 'done', title: 'Done', cards: tasks.filter((t) => t.status === 2) },
+    { id: ColumnType.toDo, title: 'To Do', cards: tasks.filter((t) => t.status === 0) },
+    { id: ColumnType.inProgress, title: 'In Progress', cards: tasks.filter((t) => t.status === 1) },
+    { id: ColumnType.done, title: 'Done', cards: tasks.filter((t) => t.status === 2) },
   ];
 
   return (

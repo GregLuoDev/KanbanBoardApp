@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/src/lib/store';
+import { updateTask } from '@/src/lib/thunks/taskAsyncThunks';
+import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Alert,
   Button,
@@ -7,17 +11,12 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { TaskForm } from './TaskForm';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { TaskDto } from '../../lib/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch, useAppSelector } from '@/src/lib/store';
-import { createTask, updateTask } from '@/src/lib/thunks/taskAsyncThunks';
-import { useDialog } from './useDialog';
-import { RHFFormProvider } from '@/src/react-hook-form/RHFFormProvider';
-import { TCard } from '../shared/data';
+import { TCard } from '../shared/utils';
+import { TaskForm } from './TaskForm';
 
 type Props = {
   card: TCard;

@@ -13,7 +13,11 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { Ellipsis } from 'lucide-react';
 import { memo, useContext, useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
+import { blockBoardPanningAttr } from '../shared/data-attributes';
+import { isShallowEqual } from '../shared/is-shallow-equal';
+import { SettingsContext } from '../shared/settings-context';
 import {
+  ColumnType,
   getColumnData,
   isCardData,
   isCardDropTargetData,
@@ -22,10 +26,7 @@ import {
   isDraggingAColumn,
   TCardData,
   TColumn,
-} from '../shared/data';
-import { blockBoardPanningAttr } from '../shared/data-attributes';
-import { isShallowEqual } from '../shared/is-shallow-equal';
-import { SettingsContext } from '../shared/settings-context';
+} from '../shared/utils';
 import { Card } from './Card';
 import { CardShadow } from './CardDisplay';
 
@@ -50,6 +51,12 @@ const stateStyles: { [Key in TColumnState['type']]: string } = {
   'is-card-over': 'outline outline-2 outline-neutral-50',
   'is-dragging': 'opacity-40',
   'is-column-over': 'bg-slate-900',
+};
+
+const bgStyles: { [key in ColumnType]: string } = {
+  [ColumnType.toDo]: 'bg-cyan-800',
+  [ColumnType.inProgress]: 'bg-indigo-800',
+  [ColumnType.done]: 'bg-gray-500',
 };
 
 const idle = { type: 'idle' } satisfies TColumnState;
@@ -213,7 +220,7 @@ export function Column({ column }: { column: TColumn }) {
   return (
     <div className="flex w-72 flex-shrink-0 flex-col select-none" ref={outerFullHeightRef}>
       <div
-        className={`flex max-h-full flex-col rounded-lg bg-slate-800 text-neutral-50 ${stateStyles[state.type]}`}
+        className={`flex max-h-full flex-col rounded-lg ${bgStyles[column.id]} text-neutral-50 ${stateStyles[state.type]}`}
         ref={innerRef}
         {...{ [blockBoardPanningAttr]: true }}
       >
@@ -221,16 +228,10 @@ export function Column({ column }: { column: TColumn }) {
         <div
           className={`flex max-h-full flex-col ${state.type === 'is-column-over' ? 'invisible' : ''}`}
         >
-          <div className="flex flex-row items-center justify-between p-3 pb-2" ref={headerRef}>
-            <div className="pl-2 leading-4 font-bold">{column.title}</div>
-            <button
-              type="button"
-              className="rounded p-2 hover:bg-slate-700 active:bg-slate-600"
-              aria-label="More actions"
-            >
-              <Ellipsis size={16} />
-            </button>
+          <div className="eading-4 p-3 font-bold" ref={headerRef}>
+            {column.title}
           </div>
+
           <div
             className="flex flex-col overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin]"
             ref={scrollableRef}

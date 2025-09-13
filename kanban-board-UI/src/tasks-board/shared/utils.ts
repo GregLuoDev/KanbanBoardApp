@@ -7,8 +7,13 @@ export type TCard = {
   updatedAt: string;
 };
 
+export enum ColumnType {
+  toDo = 'toDo',
+  inProgress = 'inProgress',
+  done = 'done',
+}
 export type TColumn = {
-  id: string;
+  id: ColumnType;
   title: string;
   cards: TCard[];
 };
@@ -99,4 +104,12 @@ export function isDraggingAColumn({
   source: { data: Record<string | symbol, unknown> };
 }): boolean {
   return isColumnData(source.data);
+}
+
+export function convertUTCToLocal(utcString: string) {
+  const date = new Date(utcString);
+  return date.toLocaleString('en-AU', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
 }

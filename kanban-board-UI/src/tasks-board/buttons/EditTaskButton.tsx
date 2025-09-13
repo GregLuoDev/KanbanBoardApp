@@ -1,10 +1,10 @@
 'use client';
 
-import { TCard } from '../shared/data';
-import { IconButton, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { useDialog } from '../dialogs/useDialog';
+import { IconButton, Tooltip } from '@mui/material';
 import { EditTaskDialog } from '../dialogs/EditTaskDialog';
+import { useDialog } from '../dialogs/useDialog';
+import { TCard } from '../shared/utils';
 
 export function EditTaskButton({ card }: { card: TCard }) {
   const { open, handleOpenDialog, handleCloseDialog } = useDialog();

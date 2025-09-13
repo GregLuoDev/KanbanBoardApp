@@ -1,14 +1,19 @@
 'use client';
 
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element';
+import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/unsafe-overflow/element';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { reorderWithEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/util/reorder-with-edge';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
+import { bindAll } from 'bind-event-listener';
 import { useContext, useEffect, useRef, useState } from 'react';
 import invariant from 'tiny-invariant';
 import { Column } from './components/Column';
+import { blockBoardPanningAttr } from './shared/data-attributes';
+import { SettingsContext } from './shared/settings-context';
 import {
   isCardData,
   isCardDropTargetData,
@@ -17,13 +22,7 @@ import {
   isDraggingAColumn,
   TBoard,
   TColumn,
-} from './shared/data';
-import { SettingsContext } from './shared/settings-context';
-import { unsafeOverflowAutoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/unsafe-overflow/element';
-import { bindAll } from 'bind-event-listener';
-import { blockBoardPanningAttr } from './shared/data-attributes';
-import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
-import { useAppSelector } from '../lib/store';
+} from './shared/utils';
 
 export function TasksBoard({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);

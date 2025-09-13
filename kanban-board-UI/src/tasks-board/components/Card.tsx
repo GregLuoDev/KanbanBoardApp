@@ -6,25 +6,24 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
-import {  useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
 
 import {
-  type Edge,
   attachClosestEdge,
   extractClosestEdge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { isShallowEqual } from '../shared/is-shallow-equal';
 import {
   getCardData,
   getCardDropTargetData,
   isCardData,
   isDraggingACard,
   TCard,
-} from '../shared/data';
-import { isShallowEqual } from '../shared/is-shallow-equal';
-import { TCardState ,CardDisplay} from './CardDisplay';
+} from '../shared/utils';
+import { CardDisplay, TCardState } from './CardDisplay';
 
 const idle: TCardState = { type: 'idle' };
 

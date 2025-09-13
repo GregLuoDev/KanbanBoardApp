@@ -1,12 +1,12 @@
 'use client';
 
-import { RefObject } from 'react';
 import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import { Card, CardActionArea, CardActions, CardContent, Typography } from '@mui/material';
+import { Card, CardActionArea, CardActions } from '@mui/material';
+import { RefObject } from 'react';
 import { DeleteTaskButton } from '../buttons/DeleteTaskButton';
 import { EditTaskButton } from '../buttons/EditTaskButton';
-import { useDialog } from '../dialogs/useDialog';
-import { TCard } from '../shared/data';
+import { TCard } from '../shared/utils';
+import { CardDetails } from './CardDetails';
 export type TCardState =
   | {
       type: 'idle';
@@ -57,8 +57,6 @@ export function CardDisplay({
   outerRef?: RefObject<HTMLDivElement | null>;
   innerRef?: RefObject<HTMLDivElement | null>;
 }) {
-  const { open, setOpen, handleOpenDialog, handleCloseDialog } = useDialog();
-
   return (
     <div
       ref={outerRef}
@@ -83,14 +81,7 @@ export function CardDisplay({
       >
         <Card>
           <CardActionArea>
-            <CardContent>
-              <Typography gutterBottom variant="h6" component="h5">
-                {card.title}
-              </Typography>
-              <Typography variant="body2" component="p">
-                {card.description}
-              </Typography>
-            </CardContent>
+            <CardDetails card={card} />
           </CardActionArea>
           <CardActions className="flex justify-between">
             <EditTaskButton card={card} />
